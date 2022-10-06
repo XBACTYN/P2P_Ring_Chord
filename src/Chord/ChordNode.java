@@ -3,11 +3,16 @@ package Chord;
 import java.util.Vector;
 
 public class ChordNode {
+    public Integer id;
+    public ChordNode successor;
+    public ChordNode predecessor;
+    // переделать таблицу пальцев
+    // первая колонка - Integer
+    // вторая колонка - указатели на узлы, то есть ChordNode
+    public Finger[] fingerTable = new Finger[4];
+    public Vector <Integer> keys = new Vector(16);
 
-    Integer id;
-    ChordNode successor;
-    ChordNode predecessor;
-    Vector <Vector<Integer>> finger_table;
+
 
     public ChordNode(Integer id){
         //Сделать геттеры и сеттеры
@@ -17,13 +22,40 @@ public class ChordNode {
     public void Update(){
 
     }
-    private void CalculateSuccesor(){
+    public int fingerStart(int i){
+        return (this.id + (int)Math.pow(2, i))%16;
+    }
+    private ChordNode fingerNode(int i){
+        return fingerTable[i].fingerSuccesor;
+    }
+    private void findSuccesor(){
 
     }
-    private void CalculatePredecessor(){
-
+    public ChordNode findPredecessor(Integer key){
+        ChordNode nodeKey = this;
+        int d = (nodeKey.id<nodeKey.successor.id)?0:16;
+        while(!((key > nodeKey.id)&&(key <= nodeKey.successor.id+d))) {
+            nodeKey = nodeKey.closestPrecedingFinger(key);
+            d = (nodeKey.id<nodeKey.successor.id)?0:16;
+        }
+        return nodeKey;
     }
-    private void UpdateTable(){
+    private ChordNode closestPrecedingFinger(Integer key){
+        for(int i=3; i>=0; --i){
+            if(this.id<key) {
+                if ((fingerNode(i).id > this.id) && (fingerNode(i).id < key)) {
+                    return fingerNode(i);
+                }
+            }
+            else{
+                if ((fingerNode(i).id > key) || (fingerNode(i).id < this.id)) {
+                    return fingerNode(i);
+                }
+            }
+        }
+        return this;
+    }
+    private void updateTable(){
 
     }
 }
