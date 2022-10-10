@@ -1,6 +1,9 @@
 package Chord;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Vector;
+
 
 public class ChordNode {
     public Integer id;
@@ -10,8 +13,7 @@ public class ChordNode {
     // первая колонка - Integer
     // вторая колонка - указатели на узлы, то есть ChordNode
     public Finger[] fingerTable = new Finger[4];
-    public Vector <Integer> keys = new Vector(16);
-
+    public Vector keys = new Vector(16);
 
 
     public ChordNode(Integer id){
@@ -63,27 +65,28 @@ public class ChordNode {
 //
 //    }
 
-    public void initFingerTable(ChordNode node){
+    public void initFingerTable(@NotNull ChordNode node){
+        // переделать для инициализации таблицы в текущем классе
         // заполняем первую строчку в fingerTable
-        node.fingerTable[0].start = node.fingerStart(0);
-        node.fingerTable[0].fingerSuccesor = findSuccesor(fingerTable[0].start);
-//        node.predecessor = ???
-//        predecessor = successor.predecessor;
+        fingerTable[0].start = fingerStart(0);
+        fingerTable[0].fingerSuccesor = node.findSuccesor(fingerTable[0].start);
+        // predecessor = successor.predecessor;
         // заполняем поля predecessor и successor в node
-        node.predecessor = findPredecessor(node.id);
-        node.successor = node.predecessor.successor;
+        predecessor = node.findPredecessor(this.id);
+        successor = predecessor.successor;
         // меняем predecessor в следующем узле после node на наш создающийся
-        node.successor.predecessor = node;// в сокете: передаем команду на change predecessor, тот выполняет коменду и отправляет сигнал "готово"
+        successor.predecessor = this; // в сокете: передаем команду на change predecessor,
+        // тот выполняет коменду и отправляет сигнал "готово".
         // меняем successor в узле перед node
-        node.predecessor.successor = node;
+        predecessor.successor = this;
 
         for(int i=1; i<4; ++i){
-            node.fingerTable[i].start = node.fingerStart(i);
-            if((node.fingerStart(i)>=this.id)&&(node.fingerStart(i)<node.fingerTable[i-1].fingerSuccesor.id)){
-                node.fingerTable[i].fingerSuccesor = node.fingerTable[i-1].fingerSuccesor;
+            fingerTable[i].start = fingerStart(i);
+            if((fingerStart(i)>=this.id)&&(fingerStart(i)<fingerTable[i-1].fingerSuccesor.id)){
+                fingerTable[i].fingerSuccesor = fingerTable[i-1].fingerSuccesor;
             }
             else{
-                node.fingerTable[i].fingerSuccesor = findSuccesor(fingerTable[i].start);
+                fingerTable[i].fingerSuccesor = node.findSuccesor(fingerTable[i].start);
             }
         }
     }
