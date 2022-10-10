@@ -38,11 +38,14 @@ public class ChordNode {
 
     public ChordNode findPredecessor(Integer key){
         ChordNode nodeKey = this;
-        int d = (nodeKey.id<nodeKey.successor.id)?0:16;
+        // поправить условие для варианта node.id>node.successor
+        int d = (key<nodeKey.successor.id)?0:16;
+        int k = (key<nodeKey.successor.id)?16:0;
         // получение
-        while(!((key > nodeKey.id)&&(key <= nodeKey.successor.id+d))) {
+        while(!((key > nodeKey.id - k)&&(key <= nodeKey.successor.id+d))) {
             nodeKey = nodeKey.closestPrecedingFinger(key);
-            d = (nodeKey.id<nodeKey.successor.id)?0:16;
+            d = (key<nodeKey.successor.id)?0:16;
+            k = (key<nodeKey.successor.id)?16:0;
         }
         return nodeKey;
     }
@@ -73,9 +76,11 @@ public class ChordNode {
         System.out.println(fingerTable[0].start);
         System.out.println(fingerTable[0].fingerSuccesor.id);
         // predecessor = successor.predecessor;
-        // заполняем поля predecessor и successor в node
+        // заполняем поля predecessor и successor в node\
+
         predecessor = node.findPredecessor(this.id);
         successor = predecessor.successor;
+
 
         for(int i=1; i<4; ++i){
             if((fingerStart(i)>=this.id)&&(fingerStart(i)<fingerTable[i-1].fingerSuccesor.id)){
@@ -89,6 +94,10 @@ public class ChordNode {
 
 
     public void updateOthers(){
+        // меняем predecessor в следующем узле после node на наш создающийся
+        successor.predecessor = this;
+        // меняем successor в узле перед node
+        predecessor.successor = this;
         for(int i=0; i<4; ++i){
             ChordNode p = findPredecessor(this.id-(int)Math.pow(2, i));
             p.updateFingerTable(this, i);
@@ -117,7 +126,7 @@ public class ChordNode {
     }
 
     public void join(ChordNode s){
-        if( s !=null){
+        if( s.predecessor !=null){
             initFingerTable(s);
             updateOthers();
         }

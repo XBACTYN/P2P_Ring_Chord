@@ -1,11 +1,14 @@
 import Chord.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
+import java.util.Vector;
 
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
 //        ArrayList<Integer> list = new ArrayList<Integer>();
 //        Collections.addAll(list, 0,1, 2, 3, 4, 5,6,7,8,9,10,11,12,13,14,15);
@@ -59,6 +62,60 @@ public class Main {
         System.out.println(tmp4.id);
 
         System.out.println("");
+
+        int c = 1;
+        int main_node =0;
+        Vector<ChordNode> arr = new Vector<ChordNode>(16);
+        ChordNode zero = new ChordNode(0);
+        arr.set(0,zero);
+        zero.join(zero);
+
+        Scanner scan = new Scanner(System.in);
+        while(c!=0)
+        {
+            Runtime.getRuntime().exec("cls");
+            System.out.println("Основной узел: " + main_node+ "\n1\tДобавление узла\n2\tПоиск узла\n3\tУдаление узла\n4\tСделать узел основным\n0\t Выход");
+            c = scan.nextInt();
+            switch (c) {
+                case 1 -> {
+                    Runtime.getRuntime().exec("cls");
+                    System.out.println("Добавление узла\nВведите идентификатор узла: ");
+                    int node_id = scan.nextInt();
+                    ChordNode n = new ChordNode(node_id);
+                    n.join(arr.get(main_node));
+                    arr.set(node_id,n);
+                    System.in.read();
+                    break;
+                }
+                case 2 -> {
+                    Runtime.getRuntime().exec("cls");
+                    System.out.println("Поиск узла\nВведите идентификатор узла: ");
+                    int node_id = scan.nextInt();
+                    ChordNode f = arr.get(main_node).findSuccesor(node_id);
+                    System.out.println("Узел найден\nid"+f.id);
+                    f.printFingerTable();
+                    System.in.read();
+                    break;
+                }
+
+                case 3 -> {
+                    Runtime.getRuntime().exec("cls");
+                    System.out.println("Удаление узла\nВведите идентификатор узла: ");
+                    int node_id = scan.nextInt();
+                    break;
+                }
+                case 4 -> {
+                    Runtime.getRuntime().exec("cls");
+                    System.out.println("Сделать узел основным\nВведите идентификатор узла: ");
+                    main_node = scan.nextInt();
+                    break;
+                }
+                default -> {
+                    break;
+                }
+            }
+        }
+
     }
 
 }
