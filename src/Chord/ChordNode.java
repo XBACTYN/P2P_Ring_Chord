@@ -1,5 +1,8 @@
 package Chord;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 import java.util.Vector;
 
 public class ChordNode {
@@ -63,27 +66,23 @@ public class ChordNode {
 //
 //    }
 
-    public void initFingerTable(ChordNode node){
+    public void initFingerTable(@NotNull ChordNode node){
+        // переделать для инициализации таблицы в текущем классе
         // заполняем первую строчку в fingerTable
-        node.fingerTable[0].start = node.fingerStart(0);
-        node.fingerTable[0].fingerSuccesor = findSuccesor(fingerTable[0].start);
-//        node.predecessor = ???
-//        predecessor = successor.predecessor;
+        fingerTable[0] = new Finger(fingerStart(0), node.findSuccesor(fingerStart(0)));
+        System.out.println(fingerTable[0].start);
+        System.out.println(fingerTable[0].fingerSuccesor.id);
+        // predecessor = successor.predecessor;
         // заполняем поля predecessor и successor в node
-        node.predecessor = findPredecessor(node.id);
-        node.successor = node.predecessor.successor;
-        // меняем predecessor в следующем узле после node на наш создающийся
-        node.successor.predecessor = node;// в сокете: передаем команду на change predecessor, тот выполняет коменду и отправляет сигнал "готово"
-        // меняем successor в узле перед node
-        node.predecessor.successor = node;
+        predecessor = node.findPredecessor(this.id);
+        successor = predecessor.successor;
 
         for(int i=1; i<4; ++i){
-            node.fingerTable[i].start = node.fingerStart(i);
-            if((node.fingerStart(i)>=this.id)&&(node.fingerStart(i)<node.fingerTable[i-1].fingerSuccesor.id)){
-                node.fingerTable[i].fingerSuccesor = node.fingerTable[i-1].fingerSuccesor;
+            if((fingerStart(i)>=this.id)&&(fingerStart(i)<fingerTable[i-1].fingerSuccesor.id)){
+                fingerTable[i] = new Finger(fingerStart(i), fingerTable[i-1].fingerSuccesor);
             }
             else{
-                node.fingerTable[i].fingerSuccesor = findSuccesor(fingerTable[i].start);
+                fingerTable[i] = new Finger(fingerStart(i), node.findSuccesor(fingerStart(i)));
             }
         }
     }
@@ -92,10 +91,30 @@ public class ChordNode {
     public void updateOthers(){
         for(int i=0; i<4; ++i){
             ChordNode p = findPredecessor(this.id-(int)Math.pow(2, i));
-            // p.updateFingerTable(this.id, i);
+            p.updateFingerTable(this, i);
         }
     }
 
+    public void updateFingerTable(ChordNode s, int i){
+
+        if(this.id<fingerTable[i].fingerSuccesor.id)
+        {
+            if(s.id>=this.id && s.id<fingerTable[i].fingerSuccesor.id)
+            {
+                fingerTable[i].fingerSuccesor=s;
+                ChordNode p = predecessor;
+                p.updateFingerTable(s,i);
+            }
+        }
+        else{
+            if(s.id>=this.id || s.id<fingerTable[i].fingerSuccesor.id)
+            {
+                fingerTable[i].fingerSuccesor=s;
+                ChordNode p = predecessor;
+                p.updateFingerTable(s,i);
+            }
+        }
+    }
 
     public void printFingerTable(){
         for(int i=0; i<4; ++i) {
