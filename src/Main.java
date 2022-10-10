@@ -65,10 +65,12 @@ public class Main {
 
         int c = 1;
         int main_node =0;
-        Vector<ChordNode> arr = new Vector<ChordNode>(16);
+//        Vector<ChordNode> arr = new Vector<ChordNode>(16);
+        ChordNode[] arr = new ChordNode[16];
         ChordNode zero = new ChordNode(0);
-        arr.add(zero);
+//        arr.add(zero);
         zero.join(zero);
+        arr[zero.id] = zero;
 
         Scanner scan = new Scanner(System.in);
         while(c!=0)
@@ -85,9 +87,9 @@ public class Main {
                     System.out.println("Добавление узла\nВведите идентификатор узла: ");
                     int node_id = scan.nextInt();
                     ChordNode n = new ChordNode(node_id);
-                    n.join(arr.get(main_node));
-                    arr.add(n);
-                    System.in.read();
+                    n.join(arr[main_node]);
+                    arr[n.id]=n;
+//                    System.in.read();
                     break;
                 }
                 case 2 -> {
@@ -95,10 +97,10 @@ public class Main {
                     System.out.flush();
                     System.out.println("Поиск узла\nВведите идентификатор узла: ");
                     int node_id = scan.nextInt();
-                    ChordNode f = arr.get(main_node).findSuccesor(node_id);
-                    System.out.println("Узел найден\nid"+f.id);
-                    f.printFingerTable();
-                    System.in.read();
+                    ChordNode f = arr[main_node].findSuccesor(node_id);
+                    System.out.println("Узел "+node_id+" найден\nid "+f.id);
+//                    f.predecessor.printFingerTable();
+//                    System.in.read();
                     break;
                 }
 
