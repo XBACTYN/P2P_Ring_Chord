@@ -116,13 +116,25 @@ public class ChordNode {
         }
     }
 
+    public void join(ChordNode s){
+        if( s !=null){
+            initFingerTable(s);
+            updateOthers();
+        }
+        else{
+            for(int i=1;i<=4;++i){
+                fingerTable[i].fingerSuccesor=this;
+
+            }
+            predecessor=this;
+        }
+    }
+
     public void printFingerTable(){
         for(int i=0; i<4; ++i) {
             System.out.println(this.fingerTable[i].start);
             System.out.println(this.fingerTable[i].fingerSuccesor.id);
         }
     }
-    private void updateTable(){
 
-    }
 }

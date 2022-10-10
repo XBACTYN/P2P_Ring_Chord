@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="35b982f4-1612-454e-9355-be5e7f343fdb" name="Changes" comment="">
+    <list default="true" id="35b982f4-1612-454e-9355-be5e7f343fdb" name="Changes" comment="updateFingerTable,updataOthers наверное рабочие.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/P2P_Ring_Chord.iml" beforeDir="false" afterPath="$PROJECT_DIR$/P2P_Ring_Chord.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Chord/ChordNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Chord/ChordNode.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -81,7 +80,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665089462440</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="updateFingerTable,updataOthers наверное рабочие.">
+      <created>1665404553895</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1665404553895</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -97,6 +103,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="конструктор сети Chord/поиск predecessor(вроде работает)/провел тест на узлах 0(корневой) и 2." />
-    <option name="LAST_COMMIT_MESSAGE" value="конструктор сети Chord/поиск predecessor(вроде работает)/провел тест на узлах 0(корневой) и 2." />
+    <MESSAGE value="updateFingerTable,updataOthers наверное рабочие." />
+    <option name="LAST_COMMIT_MESSAGE" value="updateFingerTable,updataOthers наверное рабочие." />
   </component>
 </project>
