@@ -131,11 +131,12 @@ public class ChordNode {
             updateOthers();
         }
         else{
-            for(int i=1;i<=4;++i){
-                fingerTable[i].fingerSuccesor=this;
+            for(int i=0;i<4;++i){
+                fingerTable[i]= new Finger(fingerStart(i),this);
 
             }
-            predecessor=this;
+            predecessor = this;
+            successor = this;
         }
     }
 
