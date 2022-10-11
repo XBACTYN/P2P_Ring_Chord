@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="35b982f4-1612-454e-9355-be5e7f343fdb" name="Changes" comment="Довести до рабочего состояния. Доделать удаление.">
+    <list default="true" id="35b982f4-1612-454e-9355-be5e7f343fdb" name="Changes" comment="доделать делит.(just do it)&#10;добавить ключи/доправить обновление таблиц.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Chord/ChordNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Chord/ChordNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +16,9 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="origin/rotirgo_test" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -43,14 +45,6 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false"
-  }
-}]]></component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -61,6 +55,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -102,7 +97,21 @@
       <option name="project" value="LOCAL" />
       <updated>1665410995645</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="доделать делит.(just do it)">
+      <created>1665432526180</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1665432526180</updated>
+    </task>
+    <task id="LOCAL-00006" summary="доделать делит.(just do it)&#10;добавить ключи/доправить обновление таблиц.">
+      <created>1665436382907</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1665436382907</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -115,12 +124,15 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="конструктор сети Chord/поиск predecessor(вроде работает)/провел тест на узлах 0(корневой) и 2." />
     <MESSAGE value="updateFingerTable,updataOthers наверное рабочие." />
     <MESSAGE value="join надо проверить" />
     <MESSAGE value="Довести до рабочего состояния. Доделать удаление." />
-    <option name="LAST_COMMIT_MESSAGE" value="Довести до рабочего состояния. Доделать удаление." />
+    <MESSAGE value="доделать делит.(just do it)" />
+    <MESSAGE value="доделать делит.(just do it)&#10;добавить ключи/доправить обновление таблиц." />
+    <option name="LAST_COMMIT_MESSAGE" value="доделать делит.(just do it)&#10;добавить ключи/доправить обновление таблиц." />
   </component>
 </project>
