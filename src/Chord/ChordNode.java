@@ -76,7 +76,7 @@ public class ChordNode {
         ChordNode n =  this.findPredecessor(key);
         System.out.println("findSuccessor n: "+n.id);
 //        return n.fingerTable[0].fingerSuccesor;
-        return n.successor;//добавлено на время
+        return n.fingerTable[0].fingerSuccesor;//добавлено на время
     }
 
     public ChordNode findPredecessor(Integer key) {
@@ -123,7 +123,8 @@ public class ChordNode {
         // заполняем поля predecessor и successor в node\
         predecessor = node.findPredecessor(this.id);
 //        successor = fingerTable[0].fingerSuccesor;
-
+        // меняем successor в узле перед node
+        predecessor.fingerTable[0].fingerSuccesor = this;
 
 
         for(int i=1; i<4; ++i){
@@ -141,8 +142,7 @@ public class ChordNode {
             }
             System.out.println("finger[i] "+fingerTable[i].fingerSuccesor.id);
         }
-        // меняем successor в узле перед node
-        predecessor.successor = this;
+
     }
 
 
@@ -154,8 +154,8 @@ public class ChordNode {
             System.out.println("p: "+p.id+" key " + (this.id+1-(int)Math.pow(2, i)+tmp));
             p.updateFingerTable(this, i);
         }
-        successor=fingerTable[0].fingerSuccesor;
-        successor.predecessor=this;
+//        successor=fingerTable[0].fingerSuccesor;
+        fingerTable[0].fingerSuccesor.predecessor=this;
     }
 
     public void updateFingerTable(ChordNode s, int i){
@@ -188,7 +188,7 @@ public class ChordNode {
     public void printFingerTable(){
         System.out.println("Node id: "+id);
         System.out.println("Predecessor: "+predecessor.id);
-        System.out.println("Successor: "+successor.id);
+        System.out.println("Successor: "+fingerTable[0].fingerSuccesor.id);
         System.out.println("Keys: "+keys);
         System.out.println("start\tinterval\tsuccessor");
         for(int i=0; i<4; ++i) {
