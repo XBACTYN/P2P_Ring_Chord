@@ -72,34 +72,40 @@ public class ChordNode {
         return fingerTable[i].fingerSuccesor;
     }
     public ChordNode findSuccesor(Integer key){
-        System.out.println("findSuccessor "+key);
+        System.out.println(this.id+".findSuccessor "+key);
         ChordNode n =  this.findPredecessor(key);
-        System.out.println("suck "+n.fingerTable[0].fingerSuccesor.id);
+        System.out.println("findSuccessor n: "+n.id);
 //        return n.fingerTable[0].fingerSuccesor;
         return n.successor;//добавлено на время
     }
 
-    public ChordNode findPredecessor(Integer key){
+    public ChordNode findPredecessor(Integer key) {
 //        System.out.println("findPredecessor "+key);
-        System.out.println("findPredecessor top");
+//        System.out.println("findPredecessor top");
         ChordNode nodeKey = this;
         // получение
         //АХТУНГ!!!!!!!!!!!!! nodekey.id совпадает с finger[0] succesor, в while не входит и всё.
 //        while(!(doesBelong(key, nodeKey.id, nodeKey.fingerTable[0].fingerSuccesor.id, false, true)))
-        do{ // (key > (nodeKey.id - k))&&(key <= (nodeKey.fingerTable[0].fingerSuccesor.id+d))
-            System.out.println(" while key "+key);
+        System.out.println(key+" not contains in("+nodeKey.id+";"+nodeKey.fingerTable[0].fingerSuccesor.id+"] "
+                +doesBelong(key, nodeKey.id, nodeKey.fingerTable[0].fingerSuccesor.id, false, true));
+        while (!(doesBelong(key, nodeKey.id, nodeKey.fingerTable[0].fingerSuccesor.id, false, true))) { // (key > (nodeKey.id - k))&&(key <= (nodeKey.fingerTable[0].fingerSuccesor.id+d))
+            System.out.println(nodeKey.id+".closest " + key);
             nodeKey = nodeKey.closestPrecedingFinger(key); //Неправильно присваивается nodeKey
-            System.out.println("find predecessor: "+nodeKey.id+" key: "+key);
-        }while(!(doesBelong(key, nodeKey.id, nodeKey.fingerTable[0].fingerSuccesor.id, false, true)));
-            return nodeKey;
+            System.out.println(key+" not contains in("+nodeKey.id+";"+nodeKey.fingerTable[0].fingerSuccesor.id+"] "
+                    +doesBelong(key, nodeKey.id, nodeKey.fingerTable[0].fingerSuccesor.id, false, true));
+        }
+        System.out.println("findPred return: "+nodeKey.id);
+        return nodeKey;
     }
     private ChordNode closestPrecedingFinger(Integer key){
         System.out.println(" key: "+key);
         for(int i=3; i>=0; --i){
             //ОШИБКА КРАЙНЯЯ В ИФ. НЕ ВЫПОЛНЯЕТСЯ УСЛОВИЕ. ПРОВЕРИТЬ ЕГО ПРАВИЛЬНОСТЬ.
-            System.out.println("closest before if: "+fingerNode(i).id);
+            System.out.println("iteration: "+i);
+            System.out.println(fingerNode(i).id+" contains in("+this.id+";"+key+") "+
+                    doesBelong(fingerNode(i).id, this.id, key, false, false));
             if(doesBelong(fingerNode(i).id, this.id, key, false, false)) {
-                System.out.println("PredFing: "+fingerNode(i).id);
+                System.out.println("closest return: "+fingerNode(i).id);
                 return fingerNode(i);
             }
         }
@@ -112,12 +118,13 @@ public class ChordNode {
         // заполняем первую строчку в fingerTable
         System.out.println("finger node id"+node.id+"finger start this"+fingerStart(0));
         System.out.println("fingerstart "+node.findSuccesor(fingerStart(0)));
-        System.out.println(" id"+node.findSuccesor(fingerStart(0)).id);
+        System.out.println(" init id"+node.findSuccesor(fingerStart(0)).id);
         fingerTable[0] = new Finger(fingerStart(0), node.findSuccesor(fingerStart(0)));
         // заполняем поля predecessor и successor в node\
         predecessor = node.findPredecessor(this.id);
-        // меняем successor в узле перед node
-        predecessor.successor = this;
+//        successor = fingerTable[0].fingerSuccesor;
+
+
 
         for(int i=1; i<4; ++i){
 //            System.out.println("doesBelong: "+doesBelong(fingerStart(i), this.id, fingerTable[i-1].fingerSuccesor.id, true, false));
@@ -132,7 +139,10 @@ public class ChordNode {
                 fingerTable[i] = new Finger(fingerStart(i), node.findSuccesor(fingerStart(i)));
                 System.out.println("else: change "+node.id+" "+node.findSuccesor(fingerStart(i)).id);
             }
+            System.out.println("finger[i] "+fingerTable[i].fingerSuccesor.id);
         }
+        // меняем successor в узле перед node
+        predecessor.successor = this;
     }
 
 
@@ -144,6 +154,8 @@ public class ChordNode {
             System.out.println("p: "+p.id+" key " + (this.id+1-(int)Math.pow(2, i)+tmp));
             p.updateFingerTable(this, i);
         }
+        successor=fingerTable[0].fingerSuccesor;
+        successor.predecessor=this;
     }
 
     public void updateFingerTable(ChordNode s, int i){
@@ -176,7 +188,7 @@ public class ChordNode {
     public void printFingerTable(){
         System.out.println("Node id: "+id);
         System.out.println("Predecessor: "+predecessor.id);
-        System.out.println("Successor: "+fingerTable[0].fingerSuccesor.id);
+        System.out.println("Successor: "+successor.id);
         System.out.println("Keys: "+keys);
         System.out.println("start\tinterval\tsuccessor");
         for(int i=0; i<4; ++i) {
