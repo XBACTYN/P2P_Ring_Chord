@@ -72,21 +72,27 @@ public class ChordNode {
         return fingerTable[i].fingerSuccesor;
     }
     public ChordNode findSuccesor(Integer key){
+        System.out.println("findSuccessor "+key);
         ChordNode n =  this.findPredecessor(key);
+        System.out.println("suck "+n.fingerTable[0].fingerSuccesor.id);
         return n.fingerTable[0].fingerSuccesor;
     }
 
     public ChordNode findPredecessor(Integer key){
+//        System.out.println("findPredecessor "+key);
         ChordNode nodeKey = this;
         // получение
         while(!(doesBelong(key, nodeKey.id, nodeKey.fingerTable[0].fingerSuccesor.id, false, true))) { // (key > (nodeKey.id - k))&&(key <= (nodeKey.fingerTable[0].fingerSuccesor.id+d))
             nodeKey = nodeKey.closestPrecedingFinger(key);
+            System.out.println("find predecessor: "+nodeKey.id+" key: "+key);
         }
         return nodeKey;
     }
     private ChordNode closestPrecedingFinger(Integer key){
+        System.out.println(" key: "+key);
         for(int i=3; i>=0; --i){
             if(doesBelong(fingerNode(i).id, this.id, key, false, false)) {
+                System.out.println("PredFing: "+fingerNode(i).id);
                 return fingerNode(i);
             }
         }
@@ -103,28 +109,35 @@ public class ChordNode {
         predecessor.successor = this;
 
         for(int i=1; i<4; ++i){
+//            System.out.println("doesBelong: "+doesBelong(fingerStart(i), this.id, fingerTable[i-1].fingerSuccesor.id, true, false));
+            System.out.println("interval ["+this.id+";"+fingerTable[i-1].fingerSuccesor.id+") value "+fingerStart(i));
             if(doesBelong(fingerStart(i), this.id, fingerTable[i-1].fingerSuccesor.id, true, false)){
                 fingerTable[i] = new Finger(fingerStart(i), fingerTable[i-1].fingerSuccesor);
+//                System.out.println("if: save "+fingerTable[i].fingerSuccesor.id);
             }
             else{
+//                System.out.println("fingerStart "+fingerStart(i)+" node(fingerStart) "+node.findSuccesor(fingerStart(i)).id);
                 fingerTable[i] = new Finger(fingerStart(i), node.findSuccesor(fingerStart(i)));
+                System.out.println("else: change "+node.id+" "+node.findSuccesor(fingerStart(i)).id);
             }
         }
     }
 
 
     public void updateOthers(){
-
+        System.out.println("Update");
         for(int i=0; i<4; ++i){
             int tmp = ((this.id-(int)Math.pow(2, i))<0)?16:0;
             ChordNode p = findPredecessor((this.id+1-(int)Math.pow(2, i))+tmp);
+            System.out.println("p: "+p.id+" key " + (this.id+1-(int)Math.pow(2, i)+tmp));
             p.updateFingerTable(this, i);
         }
     }
 
     public void updateFingerTable(ChordNode s, int i){
         if(fingerStart(i)!=fingerTable[i].fingerSuccesor.id) {
-            if (doesBelong(s.id, this.id, fingerTable[i].fingerSuccesor.id, true, false)) {
+            if (doesBelong(s.id, fingerStart(i), fingerTable[i].fingerSuccesor.id, true, false)) {
+                System.out.println("update s: "+s.id);
                 fingerTable[i].fingerSuccesor = s;
                 ChordNode p = predecessor;
                 p.updateFingerTable(s, i);
@@ -135,8 +148,8 @@ public class ChordNode {
     public void join(ChordNode s){
         if( s != null){
             initFingerTable(s);
-            printFingerTable();
             updateOthers();
+            printFingerTable();
         }
         else{
             for(int i=0;i<4;++i){
