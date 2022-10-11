@@ -60,7 +60,10 @@ public class Main {
                     System.out.flush();
                     System.out.println("Удаление узла\nВведите идентификатор узла: ");
                     int node_id = scan.nextInt();
-                    // deleteNode
+                    //ChordNode f = arr[main_node].findSuccesor(node_id);
+                    arr[node_id].disconnect();
+                    if(node_id == main_node) main_node = arr[node_id].predecessor.id;
+                    arr[node_id] = null;
                     break;
                 }
                 case 4 -> {

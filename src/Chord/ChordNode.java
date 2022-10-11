@@ -125,8 +125,12 @@ public class ChordNode {
 //        successor = fingerTable[0].fingerSuccesor;
         // меняем successor в узле перед node
         predecessor.fingerTable[0].fingerSuccesor = this;
-
-
+        int j = predecessor.id+1;
+        while ((j%16)!=(id+1)) {
+            keys.add(j%16);
+            fingerTable[0].fingerSuccesor.keys.removeElement(j%16);
+            ++j;
+        }
         for(int i=1; i<4; ++i){
 //            System.out.println("doesBelong: "+doesBelong(fingerStart(i), this.id, fingerTable[i-1].fingerSuccesor.id, true, false));
             //System.out.println("interval ["+this.id+";"+fingerTable[i-1].fingerSuccesor.id+") value "+fingerStart(i));
@@ -142,6 +146,7 @@ public class ChordNode {
             }
             System.out.println("finger[i] "+fingerTable[i].fingerSuccesor.id);
         }
+        fingerTable[0].fingerSuccesor.predecessor=this;
 
     }
 
@@ -155,7 +160,7 @@ public class ChordNode {
             p.updateFingerTable(this, i);
         }
 //        successor=fingerTable[0].fingerSuccesor;
-        fingerTable[0].fingerSuccesor.predecessor=this;
+
     }
 
     public void updateFingerTable(ChordNode s, int i){
@@ -168,6 +173,24 @@ public class ChordNode {
             }
         }
     }
+    public void updateOthersDelete() {
+        for (int i = 0; i < 4; ++i) {
+            int tmp = ((this.id - (int) Math.pow(2, i)) < 0) ? 16 : 0;
+            ChordNode p = findPredecessor((this.id + 1 - (int) Math.pow(2, i)) + tmp);
+            p.updateFingerTableDelete(fingerTable[0].fingerSuccesor, i,this);
+        }
+    }
+    public void updateFingerTableDelete(ChordNode succ, int i,ChordNode del)
+    {
+        if(fingerNode(i).id==del.id)
+          {
+            fingerTable[i].fingerSuccesor=del.fingerTable[0].fingerSuccesor;
+            ChordNode p = predecessor;
+            p.updateFingerTableDelete(succ,i,del);
+
+          }
+    }
+
 
     public void join(ChordNode s){
         if( s != null){
@@ -181,8 +204,18 @@ public class ChordNode {
             }
             predecessor = this;
             successor = this;
+            for(int i = 0; i<16; ++i){
+                keys.add(i);
+            }
             printFingerTable();
         }
+    }
+
+    public void disconnect(){
+        fingerTable[0].fingerSuccesor.predecessor=predecessor;
+        fingerTable[0].fingerSuccesor.keys.addAll(keys);
+//        fingerTable[0].fingerSuccesor.keys.so
+        this.updateOthersDelete();
     }
 
     public void printFingerTable(){
